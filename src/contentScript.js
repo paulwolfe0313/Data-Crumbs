@@ -1,0 +1,1 @@
+console.log('📄 Data Crumbs content script loaded on:', window.location.href);
