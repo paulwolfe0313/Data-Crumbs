@@ -47,7 +47,7 @@ async def classify_cookie(cookie: CookieInput):
         response = await client.post(
             "https://api.replicate.com/v1/predictions",
             json={
-                "version": "eec2f71c986dfa3b7a5d842d22e1130550f01572906bec48beaae059b19ef4c",  # flan-t5-xl
+                "version": "dviccupvavfl3iuv3ughfpe2ju",  # flan-t5-xl
                 "input": {
                     "prompt": prompt,
                     "temperature": 0.7,
