@@ -101,6 +101,7 @@ function App() {
                 <div className="mt-1 text-gray-500">
                   Value: {cookie.valuePreview}
                 </div>
+
                 {cookie.classification && (
                   <div className="mt-1 text-blue-600 font-medium">
                     {cookie.classification} ({(cookie.confidence! * 100).toFixed(1)}%)
