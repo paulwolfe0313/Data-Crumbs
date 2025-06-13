@@ -31,41 +31,38 @@ class CookieInput(BaseModel):
 @app.post("/classify-cookie")
 async def classify_cookie(cookie: CookieInput):
     prompt = (
-        f"Classify this cookie: {cookie.name} from {cookie.domain}, "
-        f"{'secure' if cookie.isSecure else 'not secure'}, "
-        f"{'httpOnly' if cookie.isHttpOnly else 'not httpOnly'}"
+        f"Classify the following cookie: "
+        f"{cookie.name} from {cookie.domain}. "
+        f"It is {'secure' if cookie.isSecure else 'not secure'} and "
+        f"{'httpOnly' if cookie.isHttpOnly else 'not httpOnly'}. "
+        f"Choose only one label: Ad, Analytics, Authentication, Essential, Other."
     )
 
-    # Set headers for Replicate API
     headers = {
         "Authorization": f"Token {REPLICATE_API_TOKEN}",
         "Content-Type": "application/json"
     }
 
-    # Build the request to Replicate's BART model
     async with httpx.AsyncClient() as client:
         response = await client.post(
             "https://api.replicate.com/v1/predictions",
             json={
-                "version": "17994cf0c98f9d6c4410935e8de63f7cbb41e48e01fc8c0848b5465d2c5f8f73",  # facebook/bart-large-mnli
+                "version": "eec2f71c986dfa3b7a5d842d22e1130550f01572906bec48beaae059b19ef4c",  # flan-t5-xl
                 "input": {
-                    "inputs": prompt,
-                    "parameters": {
-                        "candidate_labels": "Ad, Analytics, Authentication, Essential, Other"
-                    }
+                    "prompt": prompt,
+                    "temperature": 0.7,
+                    "top_p": 0.95
                 },
-                "stream": False  # important to get a full response
+                "stream": False
             },
             headers=headers
         )
 
-    # Parse the response
     data = response.json()
 
-    labels = data["output"]["labels"]
-    scores = data["output"]["scores"]
+    output = data.get("output", "").strip()
 
     return {
-        "label": labels[0],
-        "confidence": scores[0]
+        "label": output,
+        "confidence": 1.0  # static for now since flan-t5 returns only text
     }
