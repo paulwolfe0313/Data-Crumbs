@@ -35,7 +35,7 @@ function App() {
 
     for (const cookie of cookies) {
       try {
-        const res = await fetch("http://localhost:8000/classify-cookie", {
+        const res = await fetch("https://data-crumbs.onrender.com/classify-cookie", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
