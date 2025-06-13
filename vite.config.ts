@@ -20,8 +20,8 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       input: {
-        popup: resolve(__dirname, 'src/popup.html'),
-      },
-    },
+      popup: resolve(__dirname, 'popup.html'),
+    }
+    }
   },
 })
