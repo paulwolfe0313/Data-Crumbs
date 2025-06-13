@@ -24,6 +24,7 @@ function App() {
       async (response: { cookies: CookieData[] }) => {
         const scannedCookies = response?.cookies || [];
         const classified = await classifyCookies(scannedCookies);
+        console.log("📦 Classified cookies:", classified); // ✅ log final result
         setCookies(classified);
         setScanning(false);
       }
@@ -49,14 +50,15 @@ function App() {
         });
 
         const result = await res.json();
+        console.log("✅ AI Response:", result); // 👀 log full backend result
 
         results.push({
           ...cookie,
-          classification: result.label,
-          confidence: result.confidence
+          classification: result.label || "Missing",
+          confidence: result.confidence ?? 0.0
         });
       } catch (err) {
-        console.error("Classification error:", err);
+        console.error("❌ Classification error:", err);
         results.push({ ...cookie, classification: "Unknown", confidence: 0 });
       }
     }

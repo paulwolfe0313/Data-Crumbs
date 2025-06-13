@@ -59,7 +59,7 @@ async def classify_cookie(cookie: CookieInput):
         )
 
     data = response.json()
-
+    print("DEBUG REPLICATE RESPONSE:", data)  # 👀 Log full model response
     output = data.get("output", "").strip()
 
     return {
